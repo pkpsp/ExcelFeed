@@ -76,11 +76,12 @@ class MoneyControl():
     def getName(self):
         return self.soup.find(class_="pcstname").get_text()
 
-stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/pharmaceuticals/sunpharmaceuticalindustries/SPI")
+stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/banks-public-sector/statebankindia/SBI")
 
 ml = []
 def printLL(s):
-    ml.append(s)
+    # ml.append(s)
+    print(type(s), s)
     
 printLL(stock.getBseHigh())
 printLL(stock.getBseLow())
@@ -91,6 +92,7 @@ printLL(stock.getBseVwap())
 printLL(stock.getBseOpen())
 printLL(stock.getBsePreClose())
 printLL(stock.getBseVolume(True))
+printLL(stock.getBseVolume())
 printLL(stock.getBseID())
 printLL(stock.getNseHigh())
 printLL(stock.getNseLow())
@@ -101,6 +103,7 @@ printLL(stock.getNseVwap())
 printLL(stock.getNseOpen())
 printLL(stock.getNsePreClose())
 printLL(stock.getNseVolume(True))
+printLL(stock.getNseVolume())
 printLL(stock.getNseID())
 printLL(stock.getSCID())
 printLL(stock.getName())
