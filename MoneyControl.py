@@ -11,61 +11,133 @@ class MoneyControl():
         self.soup = BeautifulSoup(response.content, 'html.parser')
         self.standAloneSoup = self.soup.find(id="standalone_valuation")
         self.conSolidatedSoup = self.soup.find(id="consolidated_valuation")
+        self.bseSoup = self.soup.find(id="div_bse_livebox_wrap")
+        self.nseSoup = self.soup.find(id="div_nse_livebox_wrap")
     
     # div_bse_livebox_wrap
     def getBseHigh(self):
-        soup2 = self.soup.find_all(class_="clearfix lowhigh_band todays_lowhigh_wrap")[0]
-        return float(soup2.find(class_="low_high3").get_text())
+        soup2 = self.bseSoup.find(class_="clearfix lowhigh_band todays_lowhigh_wrap")
+        temp = soup2.find(class_="low_high3").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getBseLow(self):
-        soup2 = self.soup.find_all(class_="clearfix lowhigh_band todays_lowhigh_wrap")[0]
-        return float(soup2.find(class_="low_high1").get_text())
+        soup2 = self.bseSoup.find(class_="clearfix lowhigh_band todays_lowhigh_wrap")
+        temp = soup2.find(class_="low_high1").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getBse52High(self):
-        soup2 = self.soup.find_all(class_="clearfix lowhigh_band week52_lowhigh_wrap")[0]
-        return float(soup2.find(class_="low_high3").get_text())
+        soup2 = self.bseSoup.find(class_="clearfix lowhigh_band week52_lowhigh_wrap")
+        temp = soup2.find(class_="low_high3").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getBse52Low(self):
-        soup2 = self.soup.find_all(class_="clearfix lowhigh_band week52_lowhigh_wrap")[0]
-        return float(soup2.find(class_="low_high1").get_text())
+        soup2 = self.bseSoup.find(class_="clearfix lowhigh_band week52_lowhigh_wrap")
+        temp = soup2.find(class_="low_high1").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getBseClose(self):
-        return float(self.soup.find(id="bprevclose").get('value'))
+        temp = self.soup.find(id="bprevclose").get('value')
+        try:
+            return float(temp)
+        except:
+            return None
     def getBseVwap(self):
-        return float(self.soup.find_all(class_="prive_avgp avgp")[0].get_text())
+        temp = self.bseSoup.find(class_="prive_avgp avgp").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getBseOpen(self):
-        return float(self.soup.find_all(class_="prev_open priceopen")[0].get_text())
+        temp = self.bseSoup.find(class_="prev_open priceopen").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getBsePreClose(self):
-        return float(self.soup.find_all(class_="prev_open priceprevclose")[0].get_text())
+        temp = self.bseSoup.find(class_="prev_open priceprevclose").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getBseVolume(self, removeComma = True):
-        temp = self.soup.find_all(class_="txt13_pc volume_data")[0].get_text()
+        temp = self.bseSoup.find(class_="txt13_pc volume_data").get_text()
         if removeComma:
-            return int(temp.replace(",",""))
+            try:
+                return int(temp.replace(",",""))
+            except:
+                return None
         return temp
     def getBseID(self):
         return self.soup.find(id="bseid").get('value')
 
     # div_nse_livebox_wrap
     def getNseHigh(self):
-        soup2 = self.soup.find_all(class_="clearfix lowhigh_band todays_lowhigh_wrap")[1]
-        return float(soup2.find(class_="low_high3").get_text())
+        soup2 = self.nseSoup.find(class_="clearfix lowhigh_band todays_lowhigh_wrap")
+        temp = soup2.find(class_="low_high3").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getNseLow(self):
-        soup2 = self.soup.find_all(class_="clearfix lowhigh_band todays_lowhigh_wrap")[1]
-        return float(soup2.find(class_="low_high1").get_text())
+        soup2 = self.nseSoup.find(class_="clearfix lowhigh_band todays_lowhigh_wrap")
+        temp = soup2.find(class_="low_high1").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getNse52High(self):
-        soup2 = self.soup.find_all(class_="clearfix lowhigh_band week52_lowhigh_wrap")[1]
-        return float(soup2.find(class_="low_high3").get_text())
+        soup2 = self.nseSoup.find(class_="clearfix lowhigh_band week52_lowhigh_wrap")
+        temp = soup2.find(class_="low_high3").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getNse52Low(self):
-        soup2 = self.soup.find_all(class_="clearfix lowhigh_band week52_lowhigh_wrap")[1]
-        return float(soup2.find(class_="low_high1").get_text())
+        soup2 = self.nseSoup.find(class_="clearfix lowhigh_band week52_lowhigh_wrap")
+        temp = soup2.find(class_="low_high1").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getNseClose(self):
-        return float(self.soup.find(id="nprevclose").get('value'))
+        temp = self.soup.find(id="nprevclose").get('value')
+        try:
+            return float(temp)
+        except:
+            return None
     def getNseVwap(self):
-        return float(self.soup.find_all(class_="prive_avgp avgp")[1].get_text())
+        temp = self.nseSoup.find(class_="prive_avgp avgp").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getNseOpen(self):
-        return float(self.soup.find_all(class_="prev_open priceopen")[1].get_text())
+        temp = self.nseSoup.find(class_="prev_open priceopen").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getNsePreClose(self):
-        return float(self.soup.find_all(class_="prev_open priceprevclose")[1].get_text())
+        temp = self.nseSoup.find(class_="prev_open priceprevclose").get_text()
+        try:
+            return float(temp)
+        except:
+            return None
     def getNseVolume(self, removeComma = True):
-        temp = self.soup.find_all(class_="txt13_pc volume_data")[1].get_text()
+        temp = self.nseSoup.find(class_="txt13_pc volume_data").get_text()
         if removeComma:
-            return int(temp.replace(",",""))
+            try:
+                return int(temp.replace(",",""))
+            except:
+                return None
         return temp    
     def getNseID(self):
         return self.soup.find(id="nseid").get('value')
@@ -81,7 +153,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getPEStandalone(self, removeComma = True):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[1].get_text()
@@ -89,7 +161,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getBookValueStandalone(self, removeComma = True):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[2].get_text()
@@ -97,7 +169,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getDividentStandalone(self, removeComma = True):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[3].get_text()
@@ -105,7 +177,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getMarketLotStandalone(self):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[4].get_text()
@@ -116,7 +188,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getEPSStandalone(self, removeComma = True):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[6].get_text()
@@ -124,7 +196,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getPCStandalone(self, removeComma = True):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[7].get_text()
@@ -132,7 +204,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getPriceBookRatioStandalone(self, removeComma = True):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[8].get_text()
@@ -140,7 +212,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getDividentYieldStandalone(self, removeComma = True):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[9].get_text()
@@ -148,7 +220,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getFaceValueStandalone(self, removeComma = True):
         temp = self.standAloneSoup.find_all(class_ = self.valuation)[10].get_text()
@@ -156,12 +228,15 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getDeliverablesStandalone(self):
         soup2 = self.standAloneSoup.find_all(class_ = self.valuation)[11]
-        temp = soup2.find('a').get_text()
-        return float(temp)
+        try:
+            temp = soup2.find('a').get_text()
+            return float(temp)
+        except:
+            soup2.get_text()
         
     def getMarketCaptureConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[0].get_text()
@@ -169,7 +244,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getPEConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[1].get_text()
@@ -177,7 +252,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getBookValueConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[2].get_text()
@@ -185,7 +260,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getDividentConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[3].get_text()
@@ -193,7 +268,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getMarketLotConsolidated(self):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[4].get_text()
@@ -204,7 +279,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getEPSConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[6].get_text()
@@ -212,7 +287,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getPCConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[7].get_text()
@@ -220,7 +295,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getPriceBookRatioConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[8].get_text()
@@ -228,7 +303,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getDividentYieldConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[9].get_text()
@@ -236,7 +311,7 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getFaceValueConsolidated(self, removeComma = True):
         temp = self.conSolidatedSoup.find_all(class_ = self.valuation)[10].get_text()
@@ -244,22 +319,28 @@ class MoneyControl():
             try:
                 return float(temp.replace(",",""))
             except:
-                return temp.replace(",","")
+                return None
         return temp    
     def getDeliverablesConsolidated(self):
         soup2 = self.conSolidatedSoup.find_all(class_ = self.valuation)[11]
-        temp = soup2.find('a').get_text()
-        return float(temp)
+        try:
+            temp = soup2.find('a').get_text()
+            return float(temp)
+        except:
+            return None
 
 
 
 
+# stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/domestic-appliances/hawkinscooker/HC02")
 stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/oil-drillingexploration/oilnaturalgascorporation/ONG")
+
 
 ml = []
 mSpace = 20
 def printLL(s, t = ""):
     # ml.append(s)
+    s = s if s != None else ""
     temp = " "*(mSpace - len(t))
     print(t, temp, "==>", s)
 
