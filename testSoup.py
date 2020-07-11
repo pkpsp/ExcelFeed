@@ -96,3 +96,13 @@ quickLinkDB = {
     'Historical Prices': 'Historical Prices',
     'Price of SBI on previous budgets': 'Price of SBI on previous budgets'
 }
+
+print("-"*50)
+for i in quickLinkDB.keys():
+    try:
+        linkTag = quickLinks.find('a', {"title": quickLinkDB[i]})["href"]
+        print(linkTag)
+    except:
+        print("Error at ("+ i +")")
+    
+print("-"*50)

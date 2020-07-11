@@ -5,6 +5,57 @@ class MoneyControl():
 
     valuation = "value_txtfr"
 
+    quickLinkDB = {
+        'Business': 'Business',
+        'Earnings': 'Earnings',
+        'Mgmt Interviews': 'Mgmt Interviews',
+        'Announcements': 'Announcements',
+        'Stock Views': 'Stock Views',
+        'Brokerage Reports': 'Brokerage Reports',
+        'Sector': 'Sector',
+        'Board Meetings': 'Board Meetings',
+        'AGM/EGM': 'AGM/EGM',
+        'Bonus': 'Bonus',
+        'Rights': 'Rights',
+        'Splits': 'Splits',
+        'Dividends': 'Dividends',
+        'Company History': 'Company History',
+        'Listing Info': 'Listing Info',
+        'Locations': 'Locations',
+        'Bulk Deals': 'Bulk Deals',
+        'Large Deals': 'Large Deals',
+        'Shareholding': 'Shareholding',
+        'MF Holding': 'MF Holding',
+        'Top Shareholders': 'Top Shareholders',
+        'Promoter Holding': 'Promoter Holding',
+        'Balance Sheet': 'Balance Sheet',
+        'Profit & Loss': 'Profit & Loss',
+        'Quarterly Results': 'Quarterly Results',
+        'Half Yearly Results': 'Half Yearly Results',
+        'Nine Monthly Results': 'Nine Monthly Results',
+        'Yearly Results': 'Yearly Results',
+        'Cash Flow': 'Cash Flow',
+        'Ratios': 'Ratios',
+        'Directors Report': 'Directors Report',
+        'Chairman\'s Speech': 'Chairman\'s Speech',
+        'Auditors Report': 'Auditors Report',
+        'Notes to Accounts': 'Notes to Accounts',
+        'Finished Goods': 'Finished Goods',
+        'Raw Materials': 'Raw Materials',
+        'Background': 'Background',
+        'Board of Directors': 'Board of Directors',
+        'Capital Structure': 'Capital Structure',
+        'Competition': 'Competition',
+        'Price': 'Price',
+        'Price Performance': 'Price Performance',
+        'Market Cap': 'Market Cap',
+        'Net Sales': 'Net Sales',
+        'Net Profit': 'Net Profit',
+        'Total Assets': 'Total Assets',
+        'Historical Prices': 'Historical Prices',
+        'Price of SBI on previous budgets': 'Price of SBI on previous budgets'
+    }
+
     def __init__(self, url):
         # super().__init__()
         response = requests.get(url)
@@ -13,6 +64,10 @@ class MoneyControl():
         self.conSolidatedSoup = self.soup.find(id="consolidated_valuation")
         self.bseSoup = self.soup.find(id="div_bse_livebox_wrap")
         self.nseSoup = self.soup.find(id="div_nse_livebox_wrap")
+
+        self.quickLinkDBIndex = []
+        for i in self.quickLinkDB.keys():
+            self.quickLinkDBIndex.append(self.quickLinkDB[i])
     
     # div_bse_livebox_wrap
     def getBseHigh(self):
@@ -328,6 +383,20 @@ class MoneyControl():
             return float(temp)
         except:
             return None
+
+    def getQuickLink(self, ref):
+        soup2 = self.soup.find(class_='clearfix quick_wraplink PT20')
+        try:
+            index = int(ref)
+            try:
+                return soup2.find('a', {"title": self.quickLinkDBIndex[index]}).get("href")
+            except:
+                return None
+        except:
+            try:
+                return soup2.find('a', {"title": self.quickLinkDB[ref]}).get("href")
+            except:
+                return None
 
 ######################################################################################################################
 
