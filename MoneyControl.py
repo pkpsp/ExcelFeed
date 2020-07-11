@@ -329,11 +329,14 @@ class MoneyControl():
         except:
             return None
 
+######################################################################################################################
 
 
 
 # stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/domestic-appliances/hawkinscooker/HC02")
-stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/oil-drillingexploration/oilnaturalgascorporation/ONG")
+# stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/pharmaceuticals/glenmarkpharma/GP08")
+# stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/oil-drillingexploration/oilnaturalgascorporation/ONG")
+stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/finance-housing/indiabullshousingfinance/IHF01")
 
 
 ml = []
@@ -404,4 +407,6 @@ printLL(stock.getDividentYieldConsolidated(),"DIVIDENT YIELD")
 printLL(stock.getFaceValueConsolidated(),"FACE VALUE")
 printLL(stock.getDeliverablesConsolidated(),"DELIVERABLES")
 # print()
+print("===========================================================================")
+print("============================= Financial Links =============================")
 print("===========================================================================")
