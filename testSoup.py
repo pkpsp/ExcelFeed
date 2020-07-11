@@ -40,69 +40,95 @@ soup = BeautifulSoup(page.content, 'html.parser')
 quickLinks = soup.find(class_='clearfix quick_wraplink PT20')
 # print(quickLinks)
 
-tag = "Quarterly Results"
-linkTag = quickLinks.find('a', {"title": tag}).get("href")
-print(linkTag)
-linkTag = quickLinks.find('a', {"title": tag})["href"]
-print(linkTag)
+tag = "Yearly Results"
+link = quickLinks.find('a', {"title": tag}).get("href")
+print(link)
 
-quickLinkDB = {
-    'Business': 'Business',
-    'Earnings': 'Earnings',
-    'Mgmt Interviews': 'Mgmt Interviews',
-    'Announcements': 'Announcements',
-    'Stock Views': 'Stock Views',
-    'Brokerage Reports': 'Brokerage Reports',
-    'Sector': 'Sector',
-    'Board Meetings': 'Board Meetings',
-    'AGM/EGM': 'AGM/EGM',
-    'Bonus': 'Bonus',
-    'Rights': 'Rights',
-    'Splits': 'Splits',
-    'Dividends': 'Dividends',
-    'Company History': 'Company History',
-    'Listing Info': 'Listing Info',
-    'Locations': 'Locations',
-    'Bulk Deals': 'Bulk Deals',
-    'Large Deals': 'Large Deals',
-    'Shareholding': 'Shareholding',
-    'MF Holding': 'MF Holding',
-    'Top Shareholders': 'Top Shareholders',
-    'Promoter Holding': 'Promoter Holding',
-    'Balance Sheet': 'Balance Sheet',
-    'Profit & Loss': 'Profit & Loss',
-    'Quarterly Results': 'Quarterly Results',
-    'Half Yearly Results': 'Half Yearly Results',
-    'Nine Monthly Results': 'Nine Monthly Results',
-    'Yearly Results': 'Yearly Results',
-    'Cash Flow': 'Cash Flow',
-    'Ratios': 'Ratios',
-    'Directors Report': 'Directors Report',
-    'Chairman\'s Speech': 'Chairman\'s Speech',
-    'Auditors Report': 'Auditors Report',
-    'Notes to Accounts': 'Notes to Accounts',
-    'Finished Goods': 'Finished Goods',
-    'Raw Materials': 'Raw Materials',
-    'Background': 'Background',
-    'Board of Directors': 'Board of Directors',
-    'Capital Structure': 'Capital Structure',
-    'Competition': 'Competition',
-    'Price': 'Price',
-    'Price Performance': 'Price Performance',
-    'Market Cap': 'Market Cap',
-    'Net Sales': 'Net Sales',
-    'Net Profit': 'Net Profit',
-    'Total Assets': 'Total Assets',
-    'Historical Prices': 'Historical Prices',
-    'Price of SBI on previous budgets': 'Price of SBI on previous budgets'
-}
+newPage = requests.get(link)
+newSoup = BeautifulSoup(str(newPage.content), 'html.parser')
 
-print("-"*50)
-for i in quickLinkDB.keys():
-    try:
-        linkTag = quickLinks.find('a', {"title": quickLinkDB[i]})["href"]
-        print(linkTag)
-    except:
-        print("Error at ("+ i +")")
+# print(type(newPage.content), str(newPage.content))
+
+# table = newSoup.find(id='standalone-new').find(class_='mctable1')
+table = newSoup.find(class_='mctable1')
+
+def tableToArray(htmlTable):
+    result = []
+    rows = htmlTable.find_all('tr')
+
+    for eachRow in rows:
+        result.append([])
+        cols = eachRow.find_all('td')
+        if(cols == None):
+            cols = eachRow.find_all('th')
+        for eachCol in cols:
+            result[-1].append(eachCol.get_text)
+            # print(eachCol.get_text())
+
+    return result
+
+tableToArray(table)
+
+# linkTag = quickLinks.find('a', {"title": tag})["href"]
+# print(linkTag)
+
+# quickLinkDB = {
+#     'Business': 'Business',
+#     'Earnings': 'Earnings',
+#     'Mgmt Interviews': 'Mgmt Interviews',
+#     'Announcements': 'Announcements',
+#     'Stock Views': 'Stock Views',
+#     'Brokerage Reports': 'Brokerage Reports',
+#     'Sector': 'Sector',
+#     'Board Meetings': 'Board Meetings',
+#     'AGM/EGM': 'AGM/EGM',
+#     'Bonus': 'Bonus',
+#     'Rights': 'Rights',
+#     'Splits': 'Splits',
+#     'Dividends': 'Dividends',
+#     'Company History': 'Company History',
+#     'Listing Info': 'Listing Info',
+#     'Locations': 'Locations',
+#     'Bulk Deals': 'Bulk Deals',
+#     'Large Deals': 'Large Deals',
+#     'Shareholding': 'Shareholding',
+#     'MF Holding': 'MF Holding',
+#     'Top Shareholders': 'Top Shareholders',
+#     'Promoter Holding': 'Promoter Holding',
+#     'Balance Sheet': 'Balance Sheet',
+#     'Profit & Loss': 'Profit & Loss',
+#     'Quarterly Results': 'Quarterly Results',
+#     'Half Yearly Results': 'Half Yearly Results',
+#     'Nine Monthly Results': 'Nine Monthly Results',
+#     'Yearly Results': 'Yearly Results',
+#     'Cash Flow': 'Cash Flow',
+#     'Ratios': 'Ratios',
+#     'Directors Report': 'Directors Report',
+#     'Chairman\'s Speech': 'Chairman\'s Speech',
+#     'Auditors Report': 'Auditors Report',
+#     'Notes to Accounts': 'Notes to Accounts',
+#     'Finished Goods': 'Finished Goods',
+#     'Raw Materials': 'Raw Materials',
+#     'Background': 'Background',
+#     'Board of Directors': 'Board of Directors',
+#     'Capital Structure': 'Capital Structure',
+#     'Competition': 'Competition',
+#     'Price': 'Price',
+#     'Price Performance': 'Price Performance',
+#     'Market Cap': 'Market Cap',
+#     'Net Sales': 'Net Sales',
+#     'Net Profit': 'Net Profit',
+#     'Total Assets': 'Total Assets',
+#     'Historical Prices': 'Historical Prices',
+#     'Price of SBI on previous budgets': 'Price of SBI on previous budgets'
+# }
+
+# print("-"*50)
+# for i in quickLinkDB.keys():
+#     try:
+#         linkTag = quickLinks.find('a', {"title": quickLinkDB[i]})["href"]
+#         print(linkTag)
+#     except:
+#         print("Error at ("+ i +")")
     
-print("-"*50)
+# print("-"*50)
