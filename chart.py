@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from MoneyControl import MoneyControl
 
 # stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/refineries/relianceindustries/RI")
-stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/finance-term-lending/sbicardspaymentservices/SCP02")
+stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/bearings/skfindia/SKF01")
 # can club
 balanceSheet = stock.getLifeTimeData(stock.getQuickLink(22))
 # profitNloss = stock.getLifeTimeData(stock.getQuickLink(23))
@@ -13,7 +13,8 @@ balanceSheet = stock.getLifeTimeData(stock.getQuickLink(22))
 # print(profitNloss)
 # print(yearlyResult)
 
-parameters = [4, 20, 33, 41]
+# parameters = [4, 20, 33, 41]
+parameters = [4, 6, 16, 38, 14, 20, 33, 41]
 db = {}
 
 period = balanceSheet[0][1:]
