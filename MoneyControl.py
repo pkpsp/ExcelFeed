@@ -155,10 +155,13 @@ class MoneyControl():
         # super().__init__()
         response = requests.get(url)
         self.soup = BeautifulSoup(response.content, 'html.parser')
-        self.standAloneSoup = self.soup.find(id="standalone_valuation")
-        self.conSolidatedSoup = self.soup.find(id="consolidated_valuation")
-        self.bseSoup = self.soup.find(id="div_bse_livebox_wrap")
-        self.nseSoup = self.soup.find(id="div_nse_livebox_wrap")
+        # self.standAloneSoup = self.soup.find(id="standalone_valuation")
+        # self.conSolidatedSoup = self.soup.find(id="consolidated_valuation")
+
+        self.bseSoup = self.soup.find(id="inp_bse")
+        self.nseSoup = self.soup.find(id="inp_nse")
+
+        self.financials = self.soup.find(id="stk_overview")
         self.createFolder()
         
         self.quickLinkDBIndex = []
@@ -167,131 +170,140 @@ class MoneyControl():
     
     # div_bse_livebox_wrap
     def getBseHigh(self):
-        soup2 = self.bseSoup.find(class_="clearfix lowhigh_band todays_lowhigh_wrap")
-        temp = soup2.find(class_="low_high3").get_text()
         try:
+            temp = self.bseSoup.find(id="sp_high").get_text()
             return float(temp)
         except:
             return None
     def getBseLow(self):
-        soup2 = self.bseSoup.find(class_="clearfix lowhigh_band todays_lowhigh_wrap")
-        temp = soup2.find(class_="low_high1").get_text()
         try:
+            temp = self.bseSoup.find(id="sp_low").get_text()
             return float(temp)
         except:
             return None
     def getBse52High(self):
-        soup2 = self.bseSoup.find(class_="clearfix lowhigh_band week52_lowhigh_wrap")
-        temp = soup2.find(class_="low_high3").get_text()
         try:
+            temp = self.bseSoup.find(id="sp_yearlyhigh").get_text() 
             return float(temp)
         except:
             return None
     def getBse52Low(self):
-        soup2 = self.bseSoup.find(class_="clearfix lowhigh_band week52_lowhigh_wrap")
-        temp = soup2.find(class_="low_high1").get_text()
         try:
+            temp = self.bseSoup.find(id="sp_yearlylow").get_text()
             return float(temp)
         except:
             return None
     def getBseClose(self):
-        temp = self.soup.find(id="bprevclose").get('value')
         try:
-            return float(temp)
-        except:
-            return None
-    def getBseVwap(self):
-        temp = self.bseSoup.find(class_="prive_avgp avgp").get_text()
-        try:
-            return float(temp)
-        except:
-            return None
-    def getBseOpen(self):
-        temp = self.bseSoup.find(class_="prev_open priceopen").get_text()
-        try:
-            return float(temp)
-        except:
-            return None
-    def getBsePreClose(self):
-        temp = self.bseSoup.find(class_="prev_open priceprevclose").get_text()
-        try:
+            temp = self.soup.find(id="bsecp").get_text().replace(",","")
             return float(temp)
         except:
             return None
     def getBseVolume(self, removeComma = True):
-        temp = self.bseSoup.find(class_="txt13_pc volume_data").get_text()
+        temp = None
+        try:
+            temp = self.bseSoup.find(id="bse_vol").get_text()
+        except:
+            return None
+
         if removeComma:
             try:
                 return int(temp.replace(",",""))
             except:
                 return None
         return temp
+    def getBseVwap(self):
+        if self.bseSoup and self.nseSoup:
+            return "ND"
+        elif self.bseSoup:
+            # return self.getNseVwap(True)
+            return None
+    def getBseOpen(self):
+        if self.bseSoup and self.nseSoup:
+            return "ND"
+        elif self.bseSoup:
+            # return self.getNseOpen(True)
+            return None
+    def getBsePreClose(self):
+        if self.bseSoup and self.nseSoup:
+            return "ND"
+        elif self.bseSoup:
+            # return self.getNsePreClose(True)
+            return None
+
     def getBseID(self):
         return self.soup.find(id="bseid").get('value')
 
     # div_nse_livebox_wrap
+    
     def getNseHigh(self):
-        soup2 = self.nseSoup.find(class_="clearfix lowhigh_band todays_lowhigh_wrap")
-        temp = soup2.find(class_="low_high3").get_text()
         try:
+            temp = self.nseSoup.find(id="sp_high").get_text()
             return float(temp)
         except:
             return None
     def getNseLow(self):
-        soup2 = self.nseSoup.find(class_="clearfix lowhigh_band todays_lowhigh_wrap")
-        temp = soup2.find(class_="low_high1").get_text()
         try:
+            temp = self.nseSoup.find(id="sp_low").get_text()
             return float(temp)
         except:
             return None
     def getNse52High(self):
-        soup2 = self.nseSoup.find(class_="clearfix lowhigh_band week52_lowhigh_wrap")
-        temp = soup2.find(class_="low_high3").get_text()
         try:
+            temp = self.nseSoup.find(id="sp_yearlyhigh").get_text()
             return float(temp)
         except:
             return None
     def getNse52Low(self):
-        soup2 = self.nseSoup.find(class_="clearfix lowhigh_band week52_lowhigh_wrap")
-        temp = soup2.find(class_="low_high1").get_text()
         try:
+            temp = self.nseSoup.find(id="sp_yearlylow").get_text()
             return float(temp)
         except:
             return None
     def getNseClose(self):
-        temp = self.soup.find(id="nprevclose").get('value')
         try:
-            return float(temp)
-        except:
-            return None
-    def getNseVwap(self):
-        temp = self.nseSoup.find(class_="prive_avgp avgp").get_text()
-        try:
-            return float(temp)
-        except:
-            return None
-    def getNseOpen(self):
-        temp = self.nseSoup.find(class_="prev_open priceopen").get_text()
-        try:
-            return float(temp)
-        except:
-            return None
-    def getNsePreClose(self):
-        temp = self.nseSoup.find(class_="prev_open priceprevclose").get_text()
-        try:
+            temp = self.soup.find(id="nsecp").get_text().replace(",","")
             return float(temp)
         except:
             return None
     def getNseVolume(self, removeComma = True):
-        temp = self.nseSoup.find(class_="txt13_pc volume_data").get_text()
+        temp = None
+        try:
+            temp = self.nseSoup.find(id="nse_vol").get_text()
+        except:
+            return None
+            
         if removeComma:
             try:
                 return int(temp.replace(",",""))
             except:
                 return None
-        return temp    
+        return temp
+    def getNseVwap(self, bypass = False):
+        if self.nseSoup or bypass:
+            try:
+                temp = self.soup.find(class_="nsevwap bsevwap").get_text().replace(",","")
+                return float(temp)
+            except:
+                return None
+    def getNseOpen(self, bypass = False):
+        if self.nseSoup or bypass:
+            try:
+                temp = self.financials.find(class_="nseopn bseopn").get_text().replace(",","")
+                return float(temp)
+            except:
+                return None
+    def getNsePreClose(self, bypass = False):
+        if self.nseSoup or bypass:
+            try:
+                temp = self.financials.find(class_="nseprvclose bseprvclose").get_text().replace(",","")
+                return float(temp)
+            except:
+                return None
+
     def getNseID(self):
-        return self.soup.find(id="nseid").get('value')
+        if self.nseSoup:
+            return self.soup.find(id="nseid").get('value')
         
     def getSCID(self):
         return self.soup.find(id="scid").get('value')
@@ -498,10 +510,10 @@ class MoneyControl():
 
 def main():
 
-    # stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/domestic-appliances/hawkinscooker/HC02")
+    stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/domestic-appliances/hawkinscooker/HC02")
     # stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/pharmaceuticals/glenmarkpharma/GP08")
     # stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/oil-drillingexploration/oilnaturalgascorporation/ONG")
-    stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/finance-housing/indiabullshousingfinance/IHF01")
+    stock = MoneyControl("https://www.moneycontrol.com/india/stockpricequote/refineries/relianceindustries/RI")
 
 
     ml = []
@@ -523,7 +535,7 @@ def main():
     printLL(stock.getBsePreClose(), "PREVIOUS CLOSE")
     printLL(stock.getBseVolume(), "VOLUME (,)")
     printLL(stock.getBseVolume(False), "VOLUME")
-    printLL(stock.getBseID(), "ID")
+    # printLL(stock.getBseID(), "ID")
     # print()
     print("=============================== NSE Details ===============================")
     printLL(stock.getNseHigh(),"HIGH")
@@ -536,49 +548,49 @@ def main():
     printLL(stock.getNsePreClose(), "PREVIOUS CLOSE")
     printLL(stock.getNseVolume(), "VOLUME")
     printLL(stock.getNseVolume(False), "VOLUME (,)")
-    printLL(stock.getNseID(), "ID")
+    # printLL(stock.getNseID(), "ID")
     # print()
     print("============================= Company Details =============================")
-    printLL(stock.getSCID(),"SCID")
-    printLL(stock.getName(),"NAME")
+    # printLL(stock.getSCID(),"SCID")
+    # printLL(stock.getName(),"NAME")
     # print()
     print("========================== Standalone  Valuation ==========================")
-    printLL(stock.getMarketCaptureStandalone(),"MARKET CAPTURE")
-    printLL(stock.getMarketCaptureStandalone(False),"MARKET CAPTURE (,)")
-    printLL(stock.getPEStandalone(),"P/E")
-    printLL(stock.getBookValueStandalone(),"BOOK VALUE")
-    printLL(stock.getDividentStandalone(),"DIVIDENT")
-    printLL(stock.getMarketLotStandalone(),"MARKET LOT")
-    printLL(stock.getIndustryPEStandalone(),"INDUSTRY P/E")
-    printLL(stock.getEPSStandalone(),"EPS")
-    printLL(stock.getPCStandalone(),"P/C")
-    printLL(stock.getPriceBookRatioStandalone(),"PRICE/BOOK")
-    printLL(stock.getDividentYieldStandalone(),"DIVIDENT YIELD")
-    printLL(stock.getFaceValueStandalone(),"FACE VALUE")
-    printLL(stock.getDeliverablesStandalone(),"DELIVERABLES")
+    # printLL(stock.getMarketCaptureStandalone(),"MARKET CAPTURE")
+    # printLL(stock.getMarketCaptureStandalone(False),"MARKET CAPTURE (,)")
+    # printLL(stock.getPEStandalone(),"P/E")
+    # printLL(stock.getBookValueStandalone(),"BOOK VALUE")
+    # printLL(stock.getDividentStandalone(),"DIVIDENT")
+    # printLL(stock.getMarketLotStandalone(),"MARKET LOT")
+    # printLL(stock.getIndustryPEStandalone(),"INDUSTRY P/E")
+    # printLL(stock.getEPSStandalone(),"EPS")
+    # printLL(stock.getPCStandalone(),"P/C")
+    # printLL(stock.getPriceBookRatioStandalone(),"PRICE/BOOK")
+    # printLL(stock.getDividentYieldStandalone(),"DIVIDENT YIELD")
+    # printLL(stock.getFaceValueStandalone(),"FACE VALUE")
+    # printLL(stock.getDeliverablesStandalone(),"DELIVERABLES")
     # print()
     print("========================= Consolidated  Valuation =========================")
-    printLL(stock.getMarketCaptureConsolidated(),"MARKET CAPTURE")
-    printLL(stock.getMarketCaptureConsolidated(False),"MARKET CAPTURE (,)")
-    printLL(stock.getPEConsolidated(),"P/E")
-    printLL(stock.getBookValueConsolidated(),"BOOK VALUE")
-    printLL(stock.getDividentConsolidated(),"DIVIDENT")
-    printLL(stock.getMarketLotConsolidated(),"MARKET LOT")
-    printLL(stock.getIndustryPEConsolidated(),"INDUSTRY P/E")
-    printLL(stock.getEPSConsolidated(),"EPS")
-    printLL(stock.getPCConsolidated(),"P/C")
-    printLL(stock.getPriceBookRatioConsolidated(),"PRICE/BOOK")
-    printLL(stock.getDividentYieldConsolidated(),"DIVIDENT YIELD")
-    printLL(stock.getFaceValueConsolidated(),"FACE VALUE")
-    printLL(stock.getDeliverablesConsolidated(),"DELIVERABLES")
+    # printLL(stock.getMarketCaptureConsolidated(),"MARKET CAPTURE")
+    # printLL(stock.getMarketCaptureConsolidated(False),"MARKET CAPTURE (,)")
+    # printLL(stock.getPEConsolidated(),"P/E")
+    # printLL(stock.getBookValueConsolidated(),"BOOK VALUE")
+    # printLL(stock.getDividentConsolidated(),"DIVIDENT")
+    # printLL(stock.getMarketLotConsolidated(),"MARKET LOT")
+    # printLL(stock.getIndustryPEConsolidated(),"INDUSTRY P/E")
+    # printLL(stock.getEPSConsolidated(),"EPS")
+    # printLL(stock.getPCConsolidated(),"P/C")
+    # printLL(stock.getPriceBookRatioConsolidated(),"PRICE/BOOK")
+    # printLL(stock.getDividentYieldConsolidated(),"DIVIDENT YIELD")
+    # printLL(stock.getFaceValueConsolidated(),"FACE VALUE")
+    # printLL(stock.getDeliverablesConsolidated(),"DELIVERABLES")
     # print()
     print("===========================================================================")
     print("============================= Quick Links =============================")
-    printLL(stock.getQuickLink(22),"Balance Sheet")
-    link = stock.getQuickLink(MoneyControl.quickLinkDB['Yearly Results'])
-    printLL(link,"Balance Sheet")
-    temp = stock.getLifeTimeData(link)
+    # printLL(stock.getQuickLink(22),"Balance Sheet")
+    # link = stock.getQuickLink(MoneyControl.quickLinkDB['Yearly Results'])
+    # printLL(link,"Balance Sheet")
+    # temp = stock.getLifeTimeData(link)
     print("===========================================================================")
-    print(temp)
+    # print(temp)
 
-# main()
+main()
